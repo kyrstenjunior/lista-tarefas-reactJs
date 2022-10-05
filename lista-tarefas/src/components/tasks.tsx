@@ -1,20 +1,27 @@
 import * as Checkbox from '@radix-ui/react-checkbox';
 import { useState } from 'react';
 import { GoCheck } from "react-icons/go";
+import { Item } from "../types/Item";
 
-export function Tasks (){
+type Props = {
+    item: Item;
+}
 
-const [selectTask, setSelectTask] = useState(false);
+export function Tasks ({item}: Props){
+
+const [checked, setChecked] = useState(item.done);
 
     return (
-        <div className='w-1/2 h-12 mt-10 flex items-center pl-5 rounded-md bg-stone-600'>
+        <div className='w-1/2 h-12 mb-3 flex items-center pl-5 rounded-md bg-stone-600'>
             <Checkbox.Root
-                checked={selectTask}
+                checked={checked}
                 onCheckedChange={(checked) => {
                     if(checked === true){
-                        setSelectTask(true);
+                        setChecked(true);
+                        item.done = true;
                     } else {
-                        setSelectTask(false);
+                        setChecked(false);
+                        item.done = false;
                     }
                 }}
                 id="taskCheck" className='w-4 h-4 bg-white rounded flex items-center justify-center shadow-[#00000024]  hover:bg-[#f5f2ff]'
@@ -23,7 +30,7 @@ const [selectTask, setSelectTask] = useState(false);
                     <GoCheck className='text-green-500 text-center' />
                 </Checkbox.Indicator>
             </Checkbox.Root>
-            <label htmlFor="taskCheck" className='text-white pl-3 text-xl'>Aqui dentro vai a tarefa digitada</label>
+            <label htmlFor="taskCheck" className={`text-white pl-3 text-xl ${checked ? 'line-through' : 'initial'}`}>{item.name}</label>
         </div>
     )
 }
